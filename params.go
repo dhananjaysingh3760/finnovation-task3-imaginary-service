@@ -367,7 +367,6 @@ func buildParamsFromOperation(op PipelineOperation) (ImageOptions, error) {
 // buildParamsFromQuery builds the ImageOptions type from untyped parameters
 func buildParamsFromQuery(query url.Values) (ImageOptions, error) {
 	var options ImageOptions
-
 	// Apply defaults
 	options.Extend = bimg.ExtendCopy
 

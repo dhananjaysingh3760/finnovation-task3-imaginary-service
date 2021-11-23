@@ -25,14 +25,24 @@ func (s *HTTPImageSource) Matches(r *http.Request) bool {
 }
 
 func (s *HTTPImageSource) GetImage(req *http.Request) ([]byte, error) {
-	u, err := parseURL(req)
-	if err != nil {
-		return nil, ErrInvalidImageURL
+	userCredentials, err := GetFirebaseConfig(req)
+	if userCredentials.BucketName == "" {
+		return nil, err
 	}
-	if shouldRestrictOrigin(u, s.Config.AllowedOrigins) {
-		return nil, fmt.Errorf("not allowed remote URL origin: %s%s", u.Host, u.Path)
-	}
-	return s.fetchImage(u, req)
+	bn := userCredentials.BucketName
+	on := filePath[1:]
+	return downloadFile(bn, on)
+
+	// u, err := parseURL(req)
+
+	// if err != nil {
+	// 	return nil, ErrInvalidImageURL
+	// }
+	// if shouldRestrictOrigin(u, s.Config.AllowedOrigins) {
+	// 	return nil, fmt.Errorf("not allowed remote URL origin: %s%s", u.Host, u.Path)
+	// }
+
+	// return s.fetchImage(u, req)
 }
 
 func (s *HTTPImageSource) fetchImage(url *url.URL, ireq *http.Request) ([]byte, error) {

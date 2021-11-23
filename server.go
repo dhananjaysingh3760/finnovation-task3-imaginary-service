@@ -2,15 +2,15 @@ package main
 
 import (
 	"context"
+	"log"
 	"net/http"
 	"net/url"
-	"log"
 	"os"
 	"os/signal"
-	"syscall"
 	"path"
 	"strconv"
 	"strings"
+	"syscall"
 	"time"
 )
 
@@ -109,7 +109,6 @@ func join(o ServerOptions, route string) string {
 // NewServerMux creates a new HTTP server route multiplexer.
 func NewServerMux(o ServerOptions) http.Handler {
 	mux := http.NewServeMux()
-
 	mux.Handle(join(o, "/"), Middleware(indexController(o), o))
 	mux.Handle(join(o, "/form"), Middleware(formController(o), o))
 	mux.Handle(join(o, "/health"), Middleware(healthController, o))

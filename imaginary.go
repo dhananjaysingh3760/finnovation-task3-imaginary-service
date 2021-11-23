@@ -80,7 +80,7 @@ Options:
   -path-prefix <value>       Url path prefix to listen to [default: "/"]
   -cors                      Enable CORS support [default: false]
   -gzip                      Enable gzip compression (deprecated) [default: false]
-  -disable-endpoints         Comma separated endpoints to disable. E.g: form,crop,rotate,health [default: ""]
+  -disable-endpointsServer(opts)        Comma separated endpoints to disable. E.g: form,crop,rotate,health [default: ""]
   -key <key>                 Define API key for authorization
   -mount <path>              Mount server local directory
   -http-cache-ttl <num>      The TTL in seconds. Adds caching headers to locally served files.
@@ -112,6 +112,9 @@ type URLSignature struct {
 	Key string
 }
 
+var filePath = ""
+var userId = ""
+
 func main() {
 	flag.Usage = func() {
 		_, _ = fmt.Fprintf(os.Stderr, usage, Version, runtime.NumCPU())
@@ -124,8 +127,6 @@ func main() {
 	if *aVers || *aVersl {
 		showVersion()
 	}
-
-	// Only required in Go < 1.5
 	runtime.GOMAXPROCS(*aCpus)
 
 	port := getPort(*aPort)

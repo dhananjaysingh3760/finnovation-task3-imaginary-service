@@ -99,6 +99,7 @@ func validate(next http.Handler, o ServerOptions) http.Handler {
 func validateImage(next http.Handler, o ServerOptions) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		path := r.URL.Path
+		// fmt.Println(path)
 		if r.Method == http.MethodGet && isPublicPath(path) {
 			next.ServeHTTP(w, r)
 			return
